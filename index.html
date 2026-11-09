@@ -3,14 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Café &amp; Cia Coffee Break</title>
-<meta name="description" content="Coffee break, buffet móvel, cestas de café da manhã e encomendas em Fortaleza. Solicite seu orçamento.">
-<meta name="theme-color" content="#F7E6CF">
-<meta property="og:title" content="Café &amp; Cia Coffee Break">
-<meta property="og:description" content="Coffee break e buffet móvel em Fortaleza. Solicite seu orçamento.">
-<meta property="og:image" content="assets/mesa-completa.webp">
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/favicon.png">
+<title>Café &amp; Cia</title>
+<meta name="description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta name="theme-color" content="#FBEAD4">
+<link rel="canonical" href="https://valeriacafeecia.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Café &amp; Cia">
+<meta property="og:url" content="https://valeriacafeecia.vercel.app/">
+<meta property="og:title" content="Café &amp; Cia">
+<meta property="og:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta property="og:image" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
+<meta property="og:image:secure_url" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo Café &amp; Cia Coffee Break">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Café &amp; Cia">
+<meta name="twitter:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta name="twitter:image" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" as="image" href="assets/logo.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/mesa-completa.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Questrial&display=swap" rel="stylesheet">
@@ -391,9 +409,15 @@
   }
   .passo button:active{transform:scale(.9)}
   .passo .mais{background:var(--laranja);border-color:var(--laranja);color:#fff}
-  .passo output{min-width:40px;text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;color:var(--marrom);font-size:.95rem}
-  .item.tem .passo output{animation:pop .25s ease}
-  .item.zero .menos,.item.zero output{visibility:hidden}
+  .passo .q{
+    width:46px;height:34px;text-align:center;border:none;background:transparent;border-radius:10px;
+    font-family:'Fredoka',system-ui,sans-serif;font-weight:600;color:var(--marrom);font-size:16px;
+    -moz-appearance:textfield;appearance:textfield;outline:none;
+  }
+  .passo .q:focus{background:var(--branco);box-shadow:0 0 0 2px var(--pessego)}
+  .passo .q::-webkit-outer-spin-button,.passo .q::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .item.tem .passo .q{animation:pop .25s ease}
+  .item.zero .menos,.item.zero .q{visibility:hidden}
 
   .info-entrega{
     margin-top:18px;padding:14px 16px;border-radius:16px;
@@ -434,9 +458,21 @@
     .folha-topo,.folha-corpo,.folha-base{padding-left:18px;padding-right:18px}
     .carrinho .btn-pri{padding:0 16px;font-size:.95rem}
   }
-  @media (min-width:900px){
-    .pagina{padding-block:20px 8px}
-    .marca-logo{width:190px}
+  @media (min-width:960px){
+    .pagina{
+      max-width:1000px;padding-block:72px 24px;
+      display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+      grid-template-areas:"marca cta" "links cta";
+      column-gap:72px;row-gap:28px;align-items:center;
+    }
+    .marca{grid-area:marca;align-self:end;margin-bottom:0;gap:26px}
+    .marca-logo{width:230px}
+    .etiquetas{width:100%}
+    .cta{grid-area:cta;aspect-ratio:4/5;max-width:470px;justify-self:end;border-radius:32px}
+    .cta-conteudo{padding:18px}
+    .links{grid-area:links;align-self:start;margin-top:0;gap:12px}
+    .link{min-height:70px;font-size:1.02rem}
+    .rodape{margin-top:72px}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -452,7 +488,7 @@
 
 <main class="pagina">
   <header class="marca">
-    <div class="marca-logo"><img src="assets/logo.png" alt="Café &amp; Cia Coffee Break" width="640" height="479"></div>
+    <div class="marca-logo"><img src="assets/logo.webp" alt="Café &amp; Cia Coffee Break" width="400" height="299" fetchpriority="high"></div>
     <div class="etiquetas" aria-label="Serviços">
       <div class="etiquetas-trilho">
       <span class="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.5 4 2 5.5 6 6-4 .5-5.5 2-6 6-.5-4-2-5.5-6-6 4-.5 5.5-2 6-6z"/><path d="M19 15c.2 1.5.8 2.1 2.2 2.3-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.3z"/></svg>Coffee break e buffet móvel</span>
@@ -492,7 +528,7 @@
       <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
 
-    <a class="link anima" style="animation-delay:.72s" id="linkFale" target="_blank" rel="noopener">
+    <a class="link anima" style="animation-delay:.72s" id="linkFale" href="https://wa.me/5585986067747?text=Ol%C3%A1!%20Vim%20pelo%20Instagram%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener">
       <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5.5 15.5c0-5.3 4.7-9.2 10.5-9.2s10.5 3.9 10.5 9.2-4.7 9.2-10.5 9.2c-1.5 0-2.9-.2-4.1-.7L6 26l1.8-4.6C6.4 19.8 5.5 17.8 5.5 15.5z"/>
         <path class="vap" d="M12 15.2c1.2-1.6 2.9-1.6 4 0s2.8 1.6 4 0"/>
@@ -522,7 +558,7 @@
   </div>
 </footer>
 
-<a class="wa-flutuante" id="waFlutuante" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+<a class="wa-flutuante" id="waFlutuante" href="https://wa.me/5585986067747?text=Ol%C3%A1!%20Vim%20pelo%20Instagram%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
   <svg viewBox="0 0 32 32" fill="#fff"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.469 2.027 7.773L0 32l8.489-2.001A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.771-1.848l-.485-.287-5.038 1.188 1.216-4.895-.317-.502A13.267 13.267 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.274-9.88c-.398-.199-2.355-1.162-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.029 1.294-1.261 1.56-.232.266-.465.299-.863.1-.398-.199-1.681-.619-3.202-1.977-1.183-1.056-1.981-2.36-2.213-2.758-.232-.398-.025-.613.175-.811.179-.178.398-.465.597-.697.199-.232.266-.398.398-.664.133-.266.066-.498-.033-.697-.1-.199-.897-2.162-1.229-2.96-.324-.778-.653-.673-.897-.685l-.764-.013c-.266 0-.697.1-1.063.498-.365.398-1.394 1.362-1.394 3.322s1.427 3.853 1.626 4.119c.199.266 2.807 4.285 6.802 6.009.951.411 1.693.656 2.272.839.955.303 1.824.26 2.511.158.766-.114 2.355-.963 2.688-1.893.333-.93.333-1.727.233-1.893-.099-.166-.365-.266-.763-.465z"/></svg>
 </a>
 
@@ -688,7 +724,7 @@
 
     <div class="folha-corpo">
       <div class="painel ativo" id="painel-enc">
-        <p style="color:var(--suave);font-size:.9rem;margin-top:12px;line-height:1.45">Toque no <b style="color:var(--laranja-esc)">+</b> para montar seu pedido.</p>
+        <p style="color:var(--suave);font-size:.9rem;margin-top:12px;line-height:1.45">Use o <b style="color:var(--laranja-esc)">+</b> ou toque no número para digitar a quantidade.</p>
         <div id="listaMenu"></div>
         <div class="info-entrega"><span>Taxa de entrega <b>R$ 20,00</b></span><span>Pedido mínimo <b>R$ 250,00</b></span></div>
       </div>
@@ -766,17 +802,27 @@ document.getElementById('waFlutuante').href = linkPadrao;
 
 /* ---------- Modais ---------- */
 var ultimoFoco = null;
-function abrir(id){
+function abrir(id, trocar){
   ultimoFoco = document.activeElement;
   document.getElementById(id).classList.add('ativo');
   document.body.style.overflow = 'hidden';
+  try { trocar ? history.replaceState({modal:id}, '') : history.pushState({modal:id}, ''); } catch(e){}
 }
-function fechar(id){
+function fechaVisual(id){
   document.getElementById(id).classList.remove('ativo');
   document.body.style.overflow = '';
   if (id === 'modalOrc' && enviado) setTimeout(resetForm, 400);
   if (ultimoFoco) try{ ultimoFoco.focus(); }catch(e){}
 }
+function fechar(id){
+  if (history.state && history.state.modal === id) { history.back(); }
+  else fechaVisual(id);
+}
+window.addEventListener('popstate', function(){
+  ['modalOrc','modalMenu'].forEach(function(id){
+    if (document.getElementById(id).classList.contains('ativo')) fechaVisual(id);
+  });
+});
 function foraFecha(e,id){ if (e.target.id === id) fechar(id); }
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape') ['modalOrc','modalMenu'].forEach(function(id){
@@ -883,6 +929,10 @@ document.getElementById('whatsapp').addEventListener('input', function(){
 });
 
 /* ---------- Etapas ---------- */
+document.getElementById('formOrc').addEventListener('submit', function(e){ e.preventDefault(); avancar(); });
+document.getElementById('formOrc').addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); e.target.blur(); avancar(); }
+});
 var etapa = 1, TOTAL = 4, enviado = false;
 var regras = {
   1: [['ocasiao', function(v){ return v.trim().length > 1; }], ['pessoas', function(v){ return parseInt(v,10) > 0; }]],
@@ -986,7 +1036,7 @@ function enviarOrcamento(){
     envio = Promise.resolve();
   }
 
-  var espera = new Promise(function(r){ setTimeout(r, 1800); });
+  var espera = new Promise(function(r){ setTimeout(r, 700); });
   Promise.race([envio, espera]).then(function(){
     enviado = true;
     document.querySelectorAll('.etapa').forEach(function(s){ s.classList.remove('ativa'); });
@@ -994,9 +1044,22 @@ function enviarOrcamento(){
     document.getElementById('topoOrc').querySelector('.progresso').style.display = 'none';
     document.getElementById('etapaNome').style.display = 'none';
     document.getElementById('baseOrc').style.display = 'none';
-    setTimeout(function(){ window.location.href = linkWA; }, 1200);
+    salvaContato(x);
+    setTimeout(function(){ window.location.href = linkWA; }, 900);
   });
 }
+
+function salvaContato(x){
+  try { localStorage.setItem('cafeecia-contato', JSON.stringify({nome:x.nome, whatsapp:x.whatsapp, empresa:x.empresa})); } catch(e){}
+}
+function preencheContato(){
+  try {
+    var c = JSON.parse(localStorage.getItem('cafeecia-contato') || 'null');
+    if (!c) return;
+    ['nome','whatsapp','empresa'].forEach(function(k){ var el = document.getElementById(k); if (el && !el.value && c[k]) el.value = c[k]; });
+  } catch(e){}
+}
+preencheContato();
 
 function resetForm(){
   enviado = false; etapa = 1;
@@ -1010,6 +1073,7 @@ function resetForm(){
   document.getElementById('baseOrc').style.display = '';
   var btn = document.getElementById('btnAvancar'); btn.disabled = false;
   mostraEtapa(1);
+  preencheContato();
 }
 
 /* ---------- Menu de encomendas ---------- */
@@ -1051,7 +1115,7 @@ function brl(n){ return 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d
         '<div class="nome"><b>' + it.nome + '</b><span>' + brl(it.preco) + und + '</span></div>' +
         '<div class="passo">' +
           '<button type="button" class="menos" aria-label="Diminuir ' + it.nome + '">−</button>' +
-          '<output>0</output>' +
+          '<input class="q" type="number" inputmode="numeric" min="0" value="0" aria-label="Quantidade de ' + it.nome + '">' +
           '<button type="button" class="mais" aria-label="Aumentar ' + it.nome + '">+</button>' +
         '</div></div>';
     });
@@ -1066,11 +1130,26 @@ document.getElementById('listaMenu').addEventListener('click', function(e){
   var linha = b.closest('.item'); var it = acha(linha.dataset.id);
   var n = qtd[it.id] + (b.classList.contains('mais') ? it.passo : -it.passo);
   qtd[it.id] = Math.max(0, n);
-  var out = linha.querySelector('output');
-  out.textContent = qtd[it.id];
+  linha.querySelector('.q').value = qtd[it.id];
   linha.classList.toggle('zero', qtd[it.id] === 0);
   linha.classList.remove('tem'); void linha.offsetWidth; linha.classList.add('tem');
   atualizaTotal();
+});
+document.getElementById('listaMenu').addEventListener('input', function(e){
+  if (!e.target.classList.contains('q')) return;
+  var linha = e.target.closest('.item');
+  var n = parseInt(e.target.value, 10);
+  qtd[linha.dataset.id] = isNaN(n) || n < 0 ? 0 : Math.min(n, 9999);
+  atualizaTotal();
+});
+document.getElementById('listaMenu').addEventListener('change', function(e){
+  if (!e.target.classList.contains('q')) return;
+  var linha = e.target.closest('.item');
+  e.target.value = qtd[linha.dataset.id];
+  linha.classList.toggle('zero', qtd[linha.dataset.id] === 0);
+});
+document.getElementById('listaMenu').addEventListener('focusin', function(e){
+  if (e.target.classList.contains('q')) e.target.select();
 });
 function subtotal(){ var s = 0; MENU.forEach(function(g){ g.itens.forEach(function(it){ s += qtd[it.id] * it.preco; }); }); return s; }
 function atualizaTotal(){
@@ -1102,7 +1181,9 @@ function enviarEncomenda(){
   m += '*Taxa de entrega:* ' + brl(ENTREGA) + '\n';
   m += '*Total:* ' + brl(s + ENTREGA) + '\n\n';
   m += 'Podemos combinar data, horário e endereço de entrega?';
-  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(m), '_blank', 'noopener');
+  var url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(m);
+  var w = window.open(url, '_blank');
+  if (w) { try { w.opener = null; } catch(e){} } else { window.location.href = url; }
 }
 
 /* Abas */
@@ -1118,9 +1199,9 @@ document.querySelectorAll('.aba').forEach(function(a){
   });
 });
 function irParaOrcamento(){
-  fechar('modalMenu');
+  fechaVisual('modalMenu');
   setTimeout(function(){
-    abrir('modalOrc');
+    abrir('modalOrc', true);
     var oc = document.getElementById('ocasiao');
     if (!oc.value) {
       var chip = document.querySelector('[data-alvo="ocasiao"] .chip');
