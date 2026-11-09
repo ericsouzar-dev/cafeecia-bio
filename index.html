@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Café &amp; Cia Coffee Break</title>
+<meta name="description" content="Coffee break, buffet móvel, cestas de café da manhã e encomendas em Fortaleza. Solicite seu orçamento.">
+<meta name="theme-color" content="#F7E6CF">
+<meta property="og:title" content="Café &amp; Cia Coffee Break">
+<meta property="og:description" content="Coffee break e buffet móvel em Fortaleza. Solicite seu orçamento.">
+<meta property="og:image" content="assets/mesa-completa.webp">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --marrom:#7A3C14;
+    --marrom-esc:#4E2509;
+    --caramelo:#A85B26;
+    --laranja:#E07B1E;
+    --laranja-esc:#C4650F;
+    --pessego:#F5CFA0;
+    --creme:#FBF3E8;
+    --creme-2:#F7E6CF;
+    --branco:#FFFFFF;
+    --texto:#3B2210;
+    --suave:#8A6A52;
+    --linha:#EBD5B8;
+    --verde-wa:#25D366;
+    --raio:22px;
+    --sombra:0 10px 30px rgba(78,37,9,.12);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  html,body{overflow-x:hidden}
+  body{
+    font-family:'Questrial',system-ui,-apple-system,sans-serif;
+    color:var(--texto);
+    background:#FFFAF4;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  button,input,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:none;background:none}
+  .h{font-family:'Fredoka',system-ui,sans-serif}
+
+  /* Fundo: luz suave no topo, sem textura atrás do texto */
+  .luz{
+    position:fixed;inset:0 0 auto;height:520px;z-index:-1;pointer-events:none;
+    background:radial-gradient(90% 70% at 50% 0%,#FBE2C2 0%,rgba(251,226,194,.45) 45%,rgba(251,226,194,0) 75%);
+  }
+  @keyframes desenha{to{stroke-dashoffset:0}}
+
+  body{display:flex;flex-direction:column}
+  .pagina{
+    flex:1;
+    width:100%;max-width:440px;margin:0 auto;
+    padding-block:14px 8px;
+    padding-left:max(20px,env(safe-area-inset-left,0px));
+    padding-right:max(20px,env(safe-area-inset-right,0px));
+    display:flex;flex-direction:column;align-items:center;
+  }
+
+  /* Marca */
+  .marca{display:flex;flex-direction:column;align-items:center;gap:22px;margin-bottom:26px}
+  .marca-logo{width:min(172px,46vw)}
+  .marca-logo img{width:100%;height:auto;display:block;animation:revelaLogo 1.4s cubic-bezier(.65,0,.35,1) both}
+  @keyframes revelaLogo{
+    0%{clip-path:inset(0 100% 0 0);opacity:0;transform:translateY(6px)}
+    20%{opacity:1}
+    100%{clip-path:inset(0 0 0 0);opacity:1;transform:none}
+  }
+  .marca-sub{
+    display:flex;align-items:center;gap:10px;
+    font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--caramelo);
+    opacity:0;animation:sobeEntra .8s 1s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .marca-sub::before,.marca-sub::after{content:'';width:18px;height:1px;background:currentColor;opacity:.5}
+  
+
+  .anima{opacity:0;animation:sobeEntra .8s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes sobeEntra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  /* Chamada principal: orçamento */
+  .cta{
+    position:relative;display:block;width:100%;aspect-ratio:1/1.02;max-width:100%;
+    border-radius:28px;overflow:hidden;text-align:left;
+    box-shadow:0 18px 40px -14px rgba(78,37,9,.35),0 4px 14px rgba(78,37,9,.1);
+    transition:transform .25s ease,box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;isolation:isolate;
+  }
+  .cta:hover{transform:translateY(-3px);box-shadow:0 24px 46px -14px rgba(78,37,9,.42),0 6px 16px rgba(78,37,9,.12)}
+  .cta:active{transform:scale(.985)}
+  .cta-fotos{position:absolute;inset:0;z-index:-2;background:var(--marrom)}
+  .cta-fotos img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;z-index:0;transform:scale(1.03);
+    transition:opacity 0s linear 1.5s,transform 0s linear 1.5s;
+  }
+  .cta-fotos img.anterior{opacity:1;z-index:1;transform:scale(1.1);transition:none}
+  .cta-fotos img.ativa{
+    opacity:1;z-index:2;transform:scale(1.1);
+    transition:opacity 1.3s cubic-bezier(.4,0,.2,1),transform 5s linear;
+  }
+  .cta::before{
+    content:'';position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(to top,rgba(46,20,4,.55) 0%,rgba(46,20,4,0) 34%);
+  }
+  .cta-conteudo{position:absolute;left:0;right:0;bottom:0;padding:14px;display:flex;flex-direction:column}
+  .cta-titulo{font-family:'Fredoka',system-ui,sans-serif;font-weight:500;color:#FFF7EC;font-size:1.4rem;line-height:1.18;text-wrap:balance;padding-left:4px;letter-spacing:-.005em}
+  .cta-titulo small{display:block;font-family:'Questrial',system-ui,sans-serif;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:#F5CFA0;margin-bottom:8px}
+  .cta-titulo em{font-style:normal;color:#FFC98F}
+  .cta-botao{
+    position:relative;align-self:stretch;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    min-height:56px;padding:5px 5px 5px 22px;border-radius:999px;
+    box-shadow:0 8px 22px rgba(224,123,30,.45);
+    background:var(--laranja);color:#fff;
+    font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:1.04rem;letter-spacing:.01em;
+    overflow:hidden;
+  }
+  .cta-botao::after{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+    background-size:250% 100%;animation:brilho 3.6s ease-in-out 1.4s infinite;
+  }
+  @keyframes brilho{0%{background-position:150% 0}45%,100%{background-position:-60% 0}}
+  .cta-seta{width:46px;height:46px;border-radius:50%;background:#fff;color:var(--laranja);display:grid;place-items:center;flex-shrink:0;transition:transform .25s}
+  .cta-seta svg{width:22px;height:22px}
+  .cta:hover .cta-seta{transform:rotate(-45deg)}
+
+  /* Links secundários */
+  .links{width:100%;display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .link{
+    width:100%;min-height:64px;display:flex;align-items:center;gap:14px;
+    padding:8px 16px 8px 8px;border-radius:22px;
+    background:rgba(255,255,255,.82);border:1px solid #F1E1CC;
+    color:var(--marrom);text-decoration:none;text-align:left;
+    font-family:'Fredoka',system-ui,sans-serif;font-weight:500;font-size:.98rem;line-height:1.25;
+    transition:transform .2s ease,border-color .2s,background .2s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .link:hover{transform:translateY(-2px);border-color:var(--pessego);background:#fff}
+  .link:active{transform:scale(.985)}
+  .link .ico{width:46px;height:46px;border-radius:16px;background:#FCEBD6;color:var(--marrom);display:grid;place-items:center;flex-shrink:0}
+  .link .ico svg{width:26px;height:26px}
+  .link span.t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .link span.t small{font-family:'Questrial',system-ui,sans-serif;font-weight:400;font-size:.8rem;color:var(--suave)}
+  .link .seta{width:18px;height:18px;color:var(--caramelo);opacity:.6;transition:transform .2s,opacity .2s}
+  .link:hover .seta{transform:translateX(3px);opacity:1}
+  .link:hover .ico .vap{animation:vaporIco 1.4s ease-in-out infinite}
+  @keyframes vaporIco{50%{transform:translateY(-1.5px);opacity:.5}}
+
+  /* Rodapé: pires e vapor da logo */
+  .rodape{
+    position:relative;margin-top:48px;width:100%;
+    background:#F8DDBA;color:var(--marrom);
+    padding-block:26px calc(30px + env(safe-area-inset-bottom,0px));
+    padding-left:max(16px,env(safe-area-inset-left,0px));
+    padding-right:max(16px,env(safe-area-inset-right,0px));
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .pires{position:absolute;left:0;right:0;top:0;transform:translateY(-62%);width:100%;height:34px;display:block;color:#8A4A1E}
+  .pires .fundo-pires{fill:#F8DDBA}
+  .rodape-linha{display:flex;align-items:center;gap:12px;font-size:.86rem;letter-spacing:.03em}
+  .ig{
+    width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+    color:var(--marrom);border:1.2px solid rgba(122,60,20,.35);
+    transition:transform .2s,background .2s,color .2s,border-color .2s;
+  }
+  .ig:hover{transform:translateY(-2px) rotate(-6deg);background:var(--marrom);color:#F8DDBA;border-color:var(--marrom)}
+  .ig svg{width:20px;height:20px}
+  .ponto{width:4px;height:4px;border-radius:50%;background:rgba(122,60,20,.4)}
+  .local{display:flex;align-items:center;gap:6px;color:var(--marrom)}
+  .local svg{width:20px;height:20px;color:var(--caramelo)}
+
+  /* Etiquetas de serviços */
+  .etiquetas{
+    width:min(360px,100%);overflow:hidden;margin-top:2px;
+    mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);
+    opacity:0;animation:sobeEntra .8s 1s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .etiquetas-trilho{display:flex;gap:8px;width:max-content;animation:desliza 28s linear infinite}
+  .etiquetas:hover .etiquetas-trilho{animation-play-state:paused}
+  @keyframes desliza{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 4px))}}
+  .etiqueta{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 12px 6px 9px;border-radius:999px;
+    background:rgba(255,255,255,.7);border:1px solid #F0DCC3;
+    font-size:.76rem;color:var(--marrom);letter-spacing:.01em;white-space:nowrap;
+  }
+  .etiqueta svg{width:15px;height:15px;color:var(--laranja);flex-shrink:0}
+
+  /* WhatsApp flutuante */
+  .wa-flutuante{
+    position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    width:52px;height:52px;border-radius:50%;
+    background:var(--verde-wa);display:grid;place-items:center;
+    box-shadow:0 6px 20px rgba(37,211,102,.45);z-index:40;
+    animation:pulsa 2.6s 2s infinite;transition:transform .2s;
+  }
+  .wa-flutuante:hover{transform:scale(1.08);animation:none}
+  .wa-flutuante svg{width:26px;height:26px}
+  @media (max-width:600px){
+    .wa-flutuante{width:46px;height:46px;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+    .wa-flutuante svg{width:23px;height:23px}
+  }
+  @keyframes pulsa{
+    0%,100%{box-shadow:0 6px 20px rgba(37,211,102,.45)}
+    50%{box-shadow:0 6px 26px rgba(37,211,102,.75),0 0 0 9px rgba(37,211,102,.12)}
+  }
+
+  /* Modal base */
+  .overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(46,22,6,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+    display:flex;align-items:flex-end;justify-content:center;
+    opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+  }
+  .overlay.ativo{opacity:1;visibility:visible}
+  .folha{
+    position:relative;width:100%;max-width:560px;
+    max-height:94vh;max-height:94dvh;
+    background:var(--creme);border-radius:28px 28px 0 0;
+    display:flex;flex-direction:column;overflow:hidden;
+    transform:translateY(100%);transition:transform .45s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 -10px 40px rgba(0,0,0,.25);
+  }
+  .overlay.ativo .folha{transform:none}
+  @media (min-width:700px){
+    .overlay{align-items:center;padding:24px}
+    .folha{border-radius:28px;max-height:90vh;transform:translateY(30px) scale(.97);opacity:0;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .3s}
+    .overlay.ativo .folha{transform:none;opacity:1}
+  }
+  .alca{width:44px;height:5px;border-radius:5px;background:var(--linha);margin:10px auto 0;flex-shrink:0}
+  @media (min-width:700px){.alca{display:none}}
+  .fechar{
+    position:absolute;top:14px;right:14px;z-index:3;
+    width:38px;height:38px;border-radius:50%;
+    background:var(--branco);border:1px solid var(--linha);
+    display:grid;place-items:center;color:var(--marrom);
+  }
+  .fechar svg{width:18px;height:18px}
+  .folha-topo{padding:18px 24px 10px;flex-shrink:0}
+  .folha-topo h2{font-family:'Fredoka',sans-serif;font-weight:700;color:var(--marrom);font-size:1.45rem;line-height:1.15;padding-right:40px}
+  .folha-topo p{color:var(--suave);font-size:.92rem;margin-top:6px;line-height:1.45}
+  .folha-corpo{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 24px 24px;overscroll-behavior:contain}
+  .folha-base{flex-shrink:0;padding:14px 24px calc(16px + env(safe-area-inset-bottom));background:var(--branco);border-top:1px solid var(--linha)}
+
+  /* Formulário em etapas */
+  .progresso{display:flex;gap:6px;margin-top:14px}
+  .progresso i{flex:1;height:5px;border-radius:5px;background:var(--linha);overflow:hidden;position:relative}
+  .progresso i::after{content:'';position:absolute;inset:0;background:var(--laranja);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .progresso i.ok::after{transform:scaleX(1)}
+  .etapa-nome{margin-top:8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--caramelo)}
+
+  .etapa{display:none}
+  .etapa.ativa{display:block;animation:entraEtapa .4s cubic-bezier(.22,1,.36,1)}
+  .etapa.volta{animation:entraEtapaVolta .4s cubic-bezier(.22,1,.36,1)}
+  @keyframes entraEtapa{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+  @keyframes entraEtapaVolta{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+
+  .campo{margin-top:20px}
+  .campo>label,.campo .label{
+    display:block;font-family:'Fredoka',sans-serif;font-weight:600;
+    color:var(--marrom);font-size:1rem;margin-bottom:10px;
+  }
+  .campo .opc,.campo .label em{font-style:normal;font-family:'Questrial',system-ui,sans-serif;font-weight:400;color:var(--suave);font-size:.82rem;margin-left:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .chip{
+    padding:9px 14px;border-radius:999px;font-size:.88rem;
+    background:var(--branco);border:1.5px solid var(--linha);color:var(--texto);
+    transition:all .18s;-webkit-tap-highlight-color:transparent;
+  }
+  .chip:hover{border-color:var(--caramelo)}
+  .chip.sel{background:var(--marrom);border-color:var(--marrom);color:var(--creme);animation:pop .25s ease}
+  @keyframes pop{50%{transform:scale(1.07)}}
+
+  .entrada{
+    width:100%;min-height:52px;padding:14px 16px;
+    border-radius:16px;border:1.5px solid var(--linha);background:var(--branco);
+    font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s;
+  }
+  .entrada::placeholder{color:#B59A84}
+  .entrada:focus{border-color:var(--laranja);box-shadow:0 0 0 4px rgba(224,123,30,.15)}
+  textarea.entrada{min-height:92px;resize:vertical;line-height:1.45}
+  .erro .entrada,.erro .seletor{border-color:#D2452F;animation:treme .35s}
+  .msg-erro{display:none;color:#C23B26;font-size:.82rem;margin-top:6px}
+  .erro .msg-erro{display:block}
+  @keyframes treme{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+  /* Data e horário com calendário nativo */
+  .duplo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .campo>.seletor,.seletor{
+    margin:0;font-family:'Questrial',sans-serif;font-weight:400;font-size:1rem;color:inherit;
+    position:relative;min-height:64px;border-radius:16px;
+    border:1.5px solid var(--linha);background:var(--branco);
+    display:flex;align-items:center;gap:12px;padding:10px 14px;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .seletor:focus-within{border-color:var(--laranja);box-shadow:0 0 0 4px rgba(224,123,30,.15)}
+  .seletor .s-ico{width:36px;height:36px;border-radius:12px;background:var(--creme-2);display:grid;place-items:center;color:var(--marrom);flex-shrink:0}
+  .seletor .s-ico svg{width:20px;height:20px}
+  .seletor .s-txt{display:flex;flex-direction:column;min-width:0}
+  .seletor .s-txt b{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--marrom);font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .seletor .s-txt span{font-size:.78rem;color:var(--suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .seletor.vazio .s-txt b{color:#B59A84;font-weight:500}
+  .seletor input{
+    position:absolute;inset:0;width:100%;height:100%;
+    opacity:0;cursor:pointer;font-size:16px;border:none;
+  }
+  .seletor input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer;opacity:0}
+
+  /* Contador de pessoas */
+  .contador{display:flex;align-items:center;gap:10px}
+  .contador button{
+    width:52px;height:52px;border-radius:16px;flex-shrink:0;
+    background:var(--branco);border:1.5px solid var(--linha);
+    font-family:'Fredoka',sans-serif;font-size:1.4rem;color:var(--marrom);
+    transition:background .15s;
+  }
+  .contador button:active{background:var(--creme-2)}
+  .contador .entrada{text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.2rem;color:var(--marrom)}
+
+  .acoes{display:flex;gap:10px}
+  .btn-sec,.btn-pri{
+    min-height:54px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;
+    transition:transform .15s,background .2s,opacity .2s;
+  }
+  .btn-sec{padding:0 22px;background:var(--creme-2);color:var(--marrom)}
+  .btn-pri{flex:1;background:var(--laranja);color:var(--branco);display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-pri:hover{background:var(--laranja-esc)}
+  .btn-pri:active,.btn-sec:active{transform:scale(.97)}
+  .btn-pri:disabled{opacity:.55;cursor:not-allowed}
+  .btn-pri svg{width:20px;height:20px}
+
+  /* Resumo antes de enviar */
+  .resumo{margin-top:18px;background:var(--branco);border:1px solid var(--linha);border-radius:18px;padding:6px 16px}
+  .resumo div{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px dashed var(--linha);font-size:.9rem}
+  .resumo div:last-child{border-bottom:none}
+  .resumo dt{color:var(--suave);flex-shrink:0}
+  .resumo dd{color:var(--marrom);text-align:right;font-family:'Fredoka',sans-serif;font-weight:500}
+
+  /* Sucesso */
+  .sucesso{display:none;text-align:center;padding:30px 6px 10px}
+  .sucesso.ativo{display:block;animation:sobeEntra .5s ease both}
+  .xicara{width:96px;height:96px;margin:0 auto 18px;border-radius:50%;background:var(--pessego);display:grid;place-items:center}
+  .xicara svg{width:52px;height:52px}
+  .xicara .check{stroke-dasharray:40;stroke-dashoffset:40;animation:traca .6s .3s ease forwards}
+  @keyframes traca{to{stroke-dashoffset:0}}
+  .sucesso h3{font-family:'Fredoka',sans-serif;font-weight:700;color:var(--marrom);font-size:1.4rem}
+  .sucesso p{color:var(--suave);margin:8px auto 22px;line-height:1.5;max-width:340px}
+  .btn-wa-full{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    min-height:54px;padding:0 26px;border-radius:999px;
+    background:var(--verde-wa);color:#fff;text-decoration:none;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.02rem;
+  }
+  .btn-wa-full svg{width:22px;height:22px}
+
+  /* Menu de encomendas */
+  .abas{display:flex;gap:6px;margin-top:14px;background:var(--creme-2);padding:5px;border-radius:999px}
+  .aba{flex:1;min-height:44px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:600;color:var(--marrom);font-size:.95rem;transition:background .2s,color .2s}
+  .aba.sel{background:var(--marrom);color:var(--creme)}
+  .painel{display:none}
+  .painel.ativo{display:block;animation:sobeEntra .35s ease both}
+
+  .grupo{margin-top:18px}
+  .grupo h4{
+    font-family:'Fredoka',sans-serif;font-weight:600;color:var(--caramelo);
+    font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;
+  }
+  .item{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 0;border-bottom:2px dotted #F1D3A8;
+  }
+  .item:last-child{border-bottom:none}
+  .item .nome{flex:1;min-width:0}
+  .item .nome b{display:block;font-weight:400;font-size:1rem;color:var(--marrom)}
+  .item .nome span{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--laranja-esc);font-size:.92rem}
+  .item .nome span small{font-family:'Questrial',sans-serif;font-weight:400;color:var(--suave);font-size:.78rem}
+  .passo{display:flex;align-items:center;gap:4px;flex-shrink:0}
+  .passo button{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--branco);border:1.5px solid var(--linha);color:var(--marrom);
+    font-family:'Fredoka',sans-serif;font-size:1.1rem;line-height:1;
+    display:grid;place-items:center;transition:background .15s,transform .1s;
+  }
+  .passo button:active{transform:scale(.9)}
+  .passo .mais{background:var(--laranja);border-color:var(--laranja);color:#fff}
+  .passo output{min-width:40px;text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;color:var(--marrom);font-size:.95rem}
+  .item.tem .passo output{animation:pop .25s ease}
+  .item.zero .menos,.item.zero output{visibility:hidden}
+
+  .info-entrega{
+    margin-top:18px;padding:14px 16px;border-radius:16px;
+    background:var(--laranja);color:#fff;font-size:.9rem;line-height:1.6;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  .info-entrega b{font-family:'Fredoka',sans-serif;font-weight:600}
+
+  .carrinho{display:flex;align-items:center;gap:14px}
+  .carrinho .tot{flex:1;min-width:0}
+  .carrinho .tot b{display:block;font-family:'Fredoka',sans-serif;font-weight:700;color:var(--marrom);font-size:1.25rem}
+  .carrinho .tot span{display:block;font-size:.78rem;color:var(--suave);margin-top:2px}
+  .barra{height:6px;border-radius:6px;background:var(--creme-2);margin-top:8px;overflow:hidden}
+  .barra i{display:block;height:100%;width:0;background:var(--laranja);border-radius:6px;transition:width .35s ease,background .3s}
+  .barra.ok i{background:#2EAA5C}
+  .carrinho .btn-pri{flex:0 0 auto;padding:0 20px}
+
+  .cb-foto{width:100%;height:190px;object-fit:cover;border-radius:20px;margin-top:16px;display:block}
+  .cb-texto{margin-top:16px;line-height:1.55;color:var(--texto)}
+  .cb-lista{list-style:none;margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cb-lista li{background:var(--branco);border:1px solid var(--linha);border-radius:14px;padding:11px 12px;font-size:.88rem;color:var(--marrom);display:flex;align-items:center;gap:8px}
+  .cb-lista li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--laranja);flex-shrink:0}
+  .mini-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .mini-fotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}
+
+  .toast{
+    position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));
+    transform:translate(-50%,20px);opacity:0;z-index:200;
+    background:var(--marrom-esc);color:var(--creme);padding:12px 18px;border-radius:999px;
+    font-size:.88rem;transition:all .3s;pointer-events:none;white-space:nowrap;
+  }
+  .toast.ativo{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:380px){
+    .pagina{padding-block:12px 8px}
+    .cta-titulo{font-size:1.28rem}
+    .duplo{grid-template-columns:1fr}
+    .folha-topo,.folha-corpo,.folha-base{padding-left:18px;padding-right:18px}
+    .carrinho .btn-pri{padding:0 16px;font-size:.95rem}
+  }
+  @media (min-width:900px){
+    .pagina{padding-block:20px 8px}
+    .marca-logo{width:190px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .anima,.marca-sub{opacity:1}
+    .marca-logo img{clip-path:none}
+    .etiquetas{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<div class="luz"></div>
+
+<main class="pagina">
+  <header class="marca">
+    <div class="marca-logo"><img src="assets/logo.png" alt="Café &amp; Cia Coffee Break" width="640" height="479"></div>
+    <div class="etiquetas" aria-label="Serviços">
+      <div class="etiquetas-trilho">
+      <span class="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.5 4 2 5.5 6 6-4 .5-5.5 2-6 6-.5-4-2-5.5-6-6 4-.5 5.5-2 6-6z"/><path d="M19 15c.2 1.5.8 2.1 2.2 2.3-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.3z"/></svg>Coffee break e buffet móvel</span>
+      <span class="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16l-1.6 7.2a2 2 0 0 1-2 1.6H7.6a2 2 0 0 1-2-1.6z"/><path d="M8 11c0-4 1.8-6 4-6s4 2 4 6"/><path d="M9.5 15h5"/></svg>Cestas de café da manhã</span>
+      <span class="etiqueta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.4 4.9 5.3.8-3.9 3.8.9 5.3-4.7-2.5-4.7 2.5.9-5.3-3.9-3.8 5.3-.8z"/></svg>Eventos e mimos corporativos</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.5 4 2 5.5 6 6-4 .5-5.5 2-6 6-.5-4-2-5.5-6-6 4-.5 5.5-2 6-6z"/><path d="M19 15c.2 1.5.8 2.1 2.2 2.3-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.3z"/></svg>Coffee break e buffet móvel</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16l-1.6 7.2a2 2 0 0 1-2 1.6H7.6a2 2 0 0 1-2-1.6z"/><path d="M8 11c0-4 1.8-6 4-6s4 2 4 6"/><path d="M9.5 15h5"/></svg>Cestas de café da manhã</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.4 4.9 5.3.8-3.9 3.8.9 5.3-4.7-2.5-4.7 2.5.9-5.3-3.9-3.8 5.3-.8z"/></svg>Eventos e mimos corporativos</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.5 4 2 5.5 6 6-4 .5-5.5 2-6 6-.5-4-2-5.5-6-6 4-.5 5.5-2 6-6z"/><path d="M19 15c.2 1.5.8 2.1 2.2 2.3-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.3z"/></svg>Coffee break e buffet móvel</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16l-1.6 7.2a2 2 0 0 1-2 1.6H7.6a2 2 0 0 1-2-1.6z"/><path d="M8 11c0-4 1.8-6 4-6s4 2 4 6"/><path d="M9.5 15h5"/></svg>Cestas de café da manhã</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.4 4.9 5.3.8-3.9 3.8.9 5.3-4.7-2.5-4.7 2.5.9-5.3-3.9-3.8 5.3-.8z"/></svg>Eventos e mimos corporativos</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.5 4 2 5.5 6 6-4 .5-5.5 2-6 6-.5-4-2-5.5-6-6 4-.5 5.5-2 6-6z"/><path d="M19 15c.2 1.5.8 2.1 2.2 2.3-1.4.2-2 .8-2.2 2.2-.2-1.4-.8-2-2.2-2.2 1.4-.2 2-.8 2.2-2.3z"/></svg>Coffee break e buffet móvel</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16l-1.6 7.2a2 2 0 0 1-2 1.6H7.6a2 2 0 0 1-2-1.6z"/><path d="M8 11c0-4 1.8-6 4-6s4 2 4 6"/><path d="M9.5 15h5"/></svg>Cestas de café da manhã</span>
+      <span class="etiqueta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.4 4.9 5.3.8-3.9 3.8.9 5.3-4.7-2.5-4.7 2.5.9-5.3-3.9-3.8 5.3-.8z"/></svg>Eventos e mimos corporativos</span>
+      </div>
+    </div>
+  </header>
+
+  <button class="cta anima" style="animation-delay:.45s" onclick="abrir('modalOrc')" aria-label="Solicitar orçamento">
+    <span class="cta-fotos" id="ctaFotos" aria-hidden="true"></span>
+    <span class="cta-conteudo">
+      <span class="cta-botao">Solicitar orçamento
+        <span class="cta-seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </span>
+    </span>
+  </button>
+
+  <nav class="links">
+    <button class="link anima" style="animation-delay:.6s" onclick="abrir('modalMenu')">
+      <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path class="vap" d="M13.5 10.5c-1.8-1.9 1.9-3 .4-5.6M17.6 10.2c-1.1-1.3 1.3-2.1.3-3.9"/>
+        <path d="M7.5 13.5h15v4a7.5 7.5 0 0 1-15 0z"/>
+        <path d="M22.5 14.6c3.4-.6 4.6 3.9.9 5"/>
+        <path d="M4.5 26.5c4.5 1.8 18.5 1.8 23 0"/>
+      </svg></span>
+      <span class="t">Coffee break ou menu de encomendas?<small>Cardápio com preços</small></span>
+      <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+
+    <a class="link anima" style="animation-delay:.72s" id="linkFale" target="_blank" rel="noopener">
+      <span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5.5 15.5c0-5.3 4.7-9.2 10.5-9.2s10.5 3.9 10.5 9.2-4.7 9.2-10.5 9.2c-1.5 0-2.9-.2-4.1-.7L6 26l1.8-4.6C6.4 19.8 5.5 17.8 5.5 15.5z"/>
+        <path class="vap" d="M12 15.2c1.2-1.6 2.9-1.6 4 0s2.8 1.6 4 0"/>
+      </svg></span>
+      <span class="t">Fale com a gente<small>Atendimento pelo WhatsApp</small></span>
+      <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </nav>
+
+
+</main>
+
+<footer class="rodape" id="rodape">
+  <svg class="pires" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+    <path class="fundo-pires" d="M0 34C420 58 1020 58 1440 22V60H0z"/>
+    <path fill="currentColor" d="M0 32C420 56 1020 56 1440 20C1020 50 420 50 0 32z"/>
+  </svg>
+  <div class="rodape-linha">
+    <a class="ig" href="https://www.instagram.com/valeriacafeecia/" target="_blank" rel="noopener" aria-label="Instagram @valeriacafeecia">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 5.5h11a5 5 0 0 1 5 5v11a5 5 0 0 1-5 5h-11a5 5 0 0 1-5-5v-11a5 5 0 0 1 5-5z"/><circle cx="16" cy="16" r="5"/><path d="M22 9.6h.1"/></svg>
+    </a>
+    <span class="ponto" aria-hidden="true"></span>
+    <span class="local">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28.5s-8.5-7.8-8.5-14.6a8.5 8.5 0 0 1 17 0c0 6.8-8.5 14.6-8.5 14.6z"/><ellipse cx="16" cy="13.8" rx="2.7" ry="3.8" transform="rotate(28 16 13.8)"/><path d="M14.9 10.7c1.7 1.5.4 4.6 2.2 6.2"/></svg>
+      Fortaleza-CE
+    </span>
+  </div>
+</footer>
+
+<a class="wa-flutuante" id="waFlutuante" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp">
+  <svg viewBox="0 0 32 32" fill="#fff"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.469 2.027 7.773L0 32l8.489-2.001A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.771-1.848l-.485-.287-5.038 1.188 1.216-4.895-.317-.502A13.267 13.267 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.274-9.88c-.398-.199-2.355-1.162-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.029 1.294-1.261 1.56-.232.266-.465.299-.863.1-.398-.199-1.681-.619-3.202-1.977-1.183-1.056-1.981-2.36-2.213-2.758-.232-.398-.025-.613.175-.811.179-.178.398-.465.597-.697.199-.232.266-.398.398-.664.133-.266.066-.498-.033-.697-.1-.199-.897-2.162-1.229-2.96-.324-.778-.653-.673-.897-.685l-.764-.013c-.266 0-.697.1-1.063.498-.365.398-1.394 1.362-1.394 3.322s1.427 3.853 1.626 4.119c.199.266 2.807 4.285 6.802 6.009.951.411 1.693.656 2.272.839.955.303 1.824.26 2.511.158.766-.114 2.355-.963 2.688-1.893.333-.93.333-1.727.233-1.893-.099-.166-.365-.266-.763-.465z"/></svg>
+</a>
+
+<!-- ============ MODAL ORÇAMENTO ============ -->
+<div class="overlay" id="modalOrc" onclick="foraFecha(event,'modalOrc')">
+  <div class="folha" role="dialog" aria-modal="true" aria-labelledby="tituloOrc">
+    <div class="alca"></div>
+    <button class="fechar" onclick="fechar('modalOrc')" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+
+    <div class="folha-topo" id="topoOrc">
+      <h2 id="tituloOrc">Solicitar orçamento</h2>
+      <p>Conta pra gente sobre o seu evento. Respondemos pelo WhatsApp.</p>
+      <div class="progresso"><i class="ok"></i><i></i><i></i><i></i></div>
+      <div class="etapa-nome" id="etapaNome">1 de 4 · O evento</div>
+    </div>
+
+    <form class="folha-corpo" id="formOrc" novalidate>
+      <!-- Etapa 1 -->
+      <section class="etapa ativa" data-etapa="1" data-nome="O evento">
+        <div class="campo" data-campo="ocasiao">
+          <span class="label">Qual a ocasião?</span>
+          <div class="chips" data-alvo="ocasiao">
+            <button type="button" class="chip">Coffee break corporativo</button>
+            <button type="button" class="chip">Reunião ou treinamento</button>
+            <button type="button" class="chip">Evento ou inauguração</button>
+            <button type="button" class="chip">Aniversário</button>
+            <button type="button" class="chip">Café da manhã</button>
+            <button type="button" class="chip">Happy hour</button>
+          </div>
+          <input class="entrada" id="ocasiao" type="text" placeholder="Ou escreva aqui a ocasião" autocomplete="off">
+          <p class="msg-erro">Escolha ou escreva a ocasião.</p>
+        </div>
+
+        <div class="campo" data-campo="pessoas">
+          <span class="label">Quantas pessoas?</span>
+          <div class="chips" data-alvo="pessoas">
+            <button type="button" class="chip">20</button>
+            <button type="button" class="chip">30</button>
+            <button type="button" class="chip">50</button>
+            <button type="button" class="chip">80</button>
+            <button type="button" class="chip">100</button>
+            <button type="button" class="chip">150</button>
+          </div>
+          <div class="contador">
+            <button type="button" onclick="muda(-5)" aria-label="Menos 5">−</button>
+            <input class="entrada" id="pessoas" type="number" inputmode="numeric" min="1" placeholder="Digite" aria-label="Quantidade de pessoas">
+            <button type="button" onclick="muda(5)" aria-label="Mais 5">+</button>
+          </div>
+          <p class="msg-erro">Informe a quantidade aproximada.</p>
+        </div>
+      </section>
+
+      <!-- Etapa 2 -->
+      <section class="etapa" data-etapa="2" data-nome="Data e horário">
+        <div class="campo" data-campo="data">
+          <span class="label">Data do evento</span>
+          <label class="seletor vazio" id="selData">
+            <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            <span class="s-txt"><b id="dataTxt">Escolher data</b><span id="dataSub">Toque para abrir o calendário</span></span>
+            <input type="date" id="data" aria-label="Data do evento">
+          </label>
+          <p class="msg-erro">Escolha a data.</p>
+        </div>
+
+        <div class="campo" data-campo="horario">
+          <span class="label">Horário de servir</span>
+          <div class="chips" data-alvo="horario" data-tipo="hora">
+            <button type="button" class="chip" data-v="07:30">07h30</button>
+            <button type="button" class="chip" data-v="09:00">09h</button>
+            <button type="button" class="chip" data-v="10:00">10h</button>
+            <button type="button" class="chip" data-v="15:00">15h</button>
+            <button type="button" class="chip" data-v="16:00">16h</button>
+            <button type="button" class="chip" data-v="19:00">19h</button>
+          </div>
+          <label class="seletor vazio" id="selHora">
+            <span class="s-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="s-txt"><b id="horaTxt">Outro horário</b><span>Toque para escolher</span></span>
+            <input type="time" id="horario" aria-label="Horário">
+          </label>
+          <p class="msg-erro">Escolha o horário.</p>
+        </div>
+      </section>
+
+      <!-- Etapa 3 -->
+      <section class="etapa" data-etapa="3" data-nome="Local">
+        <div class="campo">
+          <span class="label">Tipo de local <em>opcional</em></span>
+          <div class="chips" data-alvo="tipoLocal">
+            <button type="button" class="chip">Empresa</button>
+            <button type="button" class="chip">Residência</button>
+            <button type="button" class="chip">Salão de festas</button>
+            <button type="button" class="chip">Igreja</button>
+            <button type="button" class="chip">Escola</button>
+          </div>
+          <input class="entrada" id="tipoLocal" type="text" placeholder="Ou escreva o tipo de local" autocomplete="off">
+        </div>
+
+        <div class="campo" data-campo="local">
+          <label for="local">Endereço ou bairro</label>
+          <input class="entrada" id="local" type="text" placeholder="Ex: Av. Santos Dumont, Aldeota" autocomplete="street-address">
+          <p class="msg-erro">Informe onde será o evento.</p>
+        </div>
+      </section>
+
+      <!-- Etapa 4 -->
+      <section class="etapa" data-etapa="4" data-nome="Seus dados">
+        <div class="campo" data-campo="nome">
+          <label for="nome">Seu nome</label>
+          <input class="entrada" id="nome" type="text" placeholder="Nome completo" autocomplete="name">
+          <p class="msg-erro">Informe seu nome.</p>
+        </div>
+        <div class="campo" data-campo="whatsapp">
+          <label for="whatsapp">WhatsApp</label>
+          <input class="entrada" id="whatsapp" type="tel" inputmode="tel" placeholder="(85) 9 0000-0000" autocomplete="tel">
+          <p class="msg-erro">Informe um WhatsApp válido com DDD.</p>
+        </div>
+        <div class="campo">
+          <label for="empresa">Empresa <em class="opc">opcional</em></label>
+          <input class="entrada" id="empresa" type="text" placeholder="Nome da empresa" autocomplete="organization">
+        </div>
+        <div class="campo">
+          <label for="obs">Observações <em class="opc">opcional</em></label>
+          <textarea class="entrada" id="obs" placeholder="Preferências, restrições alimentares, itens que não podem faltar"></textarea>
+        </div>
+        <dl class="resumo" id="resumo"></dl>
+      </section>
+
+      <div class="sucesso" id="sucesso">
+        <div class="xicara"><svg viewBox="0 0 48 48" fill="none" stroke="#7A3C14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path class="check" d="M14 24l7 7 13-14"/></svg></div>
+        <h3>Pedido de orçamento enviado</h3>
+        <p id="sucessoTxt">Estamos abrindo o WhatsApp com suas respostas. É só tocar em enviar.</p>
+        <a class="btn-wa-full" id="btnWaSucesso" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" fill="#fff"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.469 2.027 7.773L0 32l8.489-2.001A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.274 19.453c-.398-.199-2.355-1.162-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.029 1.294-1.261 1.56-.232.266-.465.299-.863.1-.398-.199-1.681-.619-3.202-1.977-1.183-1.056-1.981-2.36-2.213-2.758-.232-.398-.025-.613.175-.811.179-.178.398-.465.597-.697.199-.232.266-.398.398-.664.133-.266.066-.498-.033-.697-.1-.199-.897-2.162-1.229-2.96-.324-.778-.653-.673-.897-.685l-.764-.013c-.266 0-.697.1-1.063.498-.365.398-1.394 1.362-1.394 3.322s1.427 3.853 1.626 4.119c.199.266 2.807 4.285 6.802 6.009.951.411 1.693.656 2.272.839.955.303 1.824.26 2.511.158.766-.114 2.355-.963 2.688-1.893.333-.93.333-1.727.233-1.893-.099-.166-.365-.266-.763-.465z"/></svg>
+          Abrir WhatsApp
+        </a>
+      </div>
+    </form>
+
+    <div class="folha-base" id="baseOrc">
+      <div class="acoes">
+        <button type="button" class="btn-sec" id="btnVoltar" onclick="voltar()" style="display:none">Voltar</button>
+        <button type="button" class="btn-pri" id="btnAvancar" onclick="avancar()">
+          <span id="txtAvancar">Continuar</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL MENU ============ -->
+<div class="overlay" id="modalMenu" onclick="foraFecha(event,'modalMenu')">
+  <div class="folha" role="dialog" aria-modal="true" aria-labelledby="tituloMenu">
+    <div class="alca"></div>
+    <button class="fechar" onclick="fechar('modalMenu')" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="folha-topo">
+      <h2 id="tituloMenu">O que você precisa?</h2>
+      <div class="abas" role="tablist">
+        <button class="aba sel" data-aba="enc" role="tab">Encomendas</button>
+        <button class="aba" data-aba="cb" role="tab">Coffee break</button>
+      </div>
+    </div>
+
+    <div class="folha-corpo">
+      <div class="painel ativo" id="painel-enc">
+        <p style="color:var(--suave);font-size:.9rem;margin-top:12px;line-height:1.45">Toque no <b style="color:var(--laranja-esc)">+</b> para montar seu pedido.</p>
+        <div id="listaMenu"></div>
+        <div class="info-entrega"><span>Taxa de entrega <b>R$ 20,00</b></span><span>Pedido mínimo <b>R$ 250,00</b></span></div>
+      </div>
+
+      <div class="painel" id="painel-cb">
+        <img class="cb-foto" src="assets/mesa-completa.webp" alt="Mesa de coffee break montada" loading="lazy">
+        <p class="cb-texto">Levamos a mesa montada até o seu evento. Cardápio e quantidades pensados para o seu público e o seu horário.</p>
+        <ul class="cb-lista">
+          <li>Salgados de forno e fritos</li>
+          <li>Mini sanduíches</li>
+          <li>Bolos e tortas</li>
+          <li>Salada de frutas</li>
+          <li>Sucos e refrigerantes</li>
+          <li>Mesa montada no local</li>
+        </ul>
+        <div class="mini-fotos">
+          <img src="assets/tortinhas.webp" alt="Tortinhas" loading="lazy">
+          <img src="assets/sanduiches.webp" alt="Mini sanduíches" loading="lazy">
+          <img src="assets/salada-frutas.webp" alt="Salada de frutas" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="folha-base" id="baseEnc">
+      <div class="carrinho">
+        <div class="tot">
+          <b id="totalTxt">R$ 0,00</b>
+          <span id="faltaTxt">Pedido mínimo de R$ 250,00</span>
+          <div class="barra" id="barra"><i id="barraFill"></i></div>
+        </div>
+        <button class="btn-pri" id="btnEnc" onclick="enviarEncomenda()" disabled>Pedir</button>
+      </div>
+    </div>
+    <div class="folha-base" id="baseCb" style="display:none">
+      <button class="btn-pri" style="width:100%" onclick="irParaOrcamento()">Solicitar orçamento de coffee break</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CONFIGURAÇÃO
+   Cole abaixo a URL do App da Web do Google Apps Script
+   ========================================================= */
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymPMx-3CNgkxEDzw1DLTXyzNgK1TXOnVTah6NTGIPLLcsq-uGmneSyn5NHryftaqAi/exec';
+var WHATSAPP = '5585986067747';
+
+/* ---------- Links de WhatsApp ---------- */
+var msgPadrao = 'Olá! Vim pelo Instagram e gostaria de mais informações.';
+var linkPadrao = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msgPadrao);
+document.getElementById('linkFale').href = linkPadrao;
+document.getElementById('waFlutuante').href = linkPadrao;
+
+/* ---------- Carrossel do card de orçamento ---------- */
+(function(){
+  var fotos = ['mesa-completa','mini-galos','tortinhas','sanduiches','paes-recheados','mini-pizzas','salada-frutas'];
+  var caixa = document.getElementById('ctaFotos');
+  var DUR = 3400, atual = 0, timer;
+  caixa.innerHTML = fotos.map(function(f){
+    return '<img src="assets/' + f + '.webp" alt="" width="900" height="900" decoding="async">';
+  }).join('');
+  var imgs = caixa.querySelectorAll('img');
+  function mostra(n, ant){
+    imgs.forEach(function(im){ im.classList.remove('anterior'); });
+    if (ant != null) { imgs[ant].classList.add('anterior'); imgs[ant].classList.remove('ativa'); }
+    void imgs[n].offsetWidth;
+    imgs[n].classList.add('ativa');
+  }
+  mostra(0);
+  var reduzido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduzido) timer = setInterval(function(){ var ant = atual; atual = (atual + 1) % fotos.length; mostra(atual, ant); }, DUR);
+})();
+
+/* ---------- Modais ---------- */
+var ultimoFoco = null;
+function abrir(id){
+  ultimoFoco = document.activeElement;
+  document.getElementById(id).classList.add('ativo');
+  document.body.style.overflow = 'hidden';
+}
+function fechar(id){
+  document.getElementById(id).classList.remove('ativo');
+  document.body.style.overflow = '';
+  if (id === 'modalOrc' && enviado) setTimeout(resetForm, 400);
+  if (ultimoFoco) try{ ultimoFoco.focus(); }catch(e){}
+}
+function foraFecha(e,id){ if (e.target.id === id) fechar(id); }
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') ['modalOrc','modalMenu'].forEach(function(id){
+    if (document.getElementById(id).classList.contains('ativo')) fechar(id);
+  });
+});
+
+function toast(t){
+  var el = document.getElementById('toast');
+  el.textContent = t; el.classList.add('ativo');
+  clearTimeout(el._t); el._t = setTimeout(function(){ el.classList.remove('ativo'); }, 2600);
+}
+
+/* ---------- Chips com resposta aberta ---------- */
+document.querySelectorAll('.chips').forEach(function(grupo){
+  var alvo = document.getElementById(grupo.dataset.alvo);
+  grupo.addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if (!c) return;
+    var jaSel = c.classList.contains('sel');
+    grupo.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('sel'); });
+    if (jaSel) { alvo.value = ''; }
+    else { c.classList.add('sel'); alvo.value = c.dataset.v || c.textContent.trim(); }
+    alvo.dispatchEvent(new Event('input', {bubbles:true}));
+    alvo.dispatchEvent(new Event('change', {bubbles:true}));
+    limpaErro(alvo);
+  });
+  alvo.addEventListener('input', function(e){
+    if (!e.isTrusted) return;
+    grupo.querySelectorAll('.chip').forEach(function(x){
+      x.classList.toggle('sel', (x.dataset.v || x.textContent.trim()) === alvo.value);
+    });
+    limpaErro(alvo);
+  });
+});
+function limpaErro(el){ var c = el.closest('.campo'); if (c) c.classList.remove('erro'); }
+
+function muda(n){
+  var el = document.getElementById('pessoas');
+  var v = parseInt(el.value || 0, 10) + n;
+  el.value = Math.max(1, v);
+  el.dispatchEvent(new Event('input'));
+  document.querySelectorAll('[data-alvo="pessoas"] .chip').forEach(function(x){ x.classList.toggle('sel', x.textContent.trim() === el.value); });
+  limpaErro(el);
+}
+
+/* ---------- Data e hora ---------- */
+var DIAS = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function hojeISO(){
+  var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0,10);
+}
+var inData = document.getElementById('data');
+var inHora = document.getElementById('horario');
+inData.min = hojeISO();
+
+function abrePicker(e){
+  if (typeof this.showPicker === 'function') { try { this.showPicker(); } catch(err){} }
+}
+inData.addEventListener('click', abrePicker);
+inHora.addEventListener('click', abrePicker);
+
+function dataLonga(iso){
+  if (!iso) return '';
+  var p = iso.split('-'); var d = new Date(+p[0], +p[1]-1, +p[2]);
+  return { curta: p[2] + '/' + p[1] + '/' + p[0], dia: DIAS[d.getDay()], extenso: d.getDate() + ' de ' + MESES[d.getMonth()] };
+}
+inData.addEventListener('change', function(){
+  var sel = document.getElementById('selData');
+  if (!this.value) { sel.classList.add('vazio'); document.getElementById('dataTxt').textContent = 'Escolher data'; document.getElementById('dataSub').textContent = 'Toque para abrir o calendário'; return; }
+  if (this.value < this.min) { this.value = ''; toast('Escolha uma data a partir de hoje'); return; }
+  var d = dataLonga(this.value);
+  sel.classList.remove('vazio');
+  document.getElementById('dataTxt').textContent = d.extenso.charAt(0).toUpperCase() + d.extenso.slice(1);
+  document.getElementById('dataSub').textContent = d.dia.charAt(0).toUpperCase() + d.dia.slice(1);
+  limpaErro(this);
+});
+function horaBonita(v){ if (!v) return ''; var p = v.split(':'); return p[0] + 'h' + (p[1] !== '00' ? p[1] : ''); }
+inHora.addEventListener('change', function(){
+  var sel = document.getElementById('selHora');
+  var ehChip = !!document.querySelector('[data-alvo="horario"] .chip.sel');
+  if (this.value && !ehChip) { sel.classList.remove('vazio'); document.getElementById('horaTxt').textContent = horaBonita(this.value); }
+  else { sel.classList.add('vazio'); document.getElementById('horaTxt').textContent = 'Outro horário'; }
+  if (this.value && !ehChip) document.querySelectorAll('[data-alvo="horario"] .chip').forEach(function(x){ x.classList.toggle('sel', x.dataset.v === inHora.value); });
+  limpaErro(this);
+});
+inHora.addEventListener('input', function(e){
+  if (!e.isTrusted) return;
+  var achou = false;
+  document.querySelectorAll('[data-alvo="horario"] .chip').forEach(function(x){ var s = x.dataset.v === inHora.value; x.classList.toggle('sel', s); if (s) achou = true; });
+  var sel = document.getElementById('selHora');
+  if (this.value && !achou) { sel.classList.remove('vazio'); document.getElementById('horaTxt').textContent = horaBonita(this.value); }
+  else { sel.classList.add('vazio'); document.getElementById('horaTxt').textContent = 'Outro horário'; }
+});
+
+/* ---------- Máscara WhatsApp ---------- */
+document.getElementById('whatsapp').addEventListener('input', function(){
+  var n = this.value.replace(/\D/g,'').slice(0,11);
+  var f = n;
+  if (n.length > 2) f = '(' + n.slice(0,2) + ') ' + n.slice(2);
+  if (n.length > 7) f = '(' + n.slice(0,2) + ') ' + n.slice(2,3) + ' ' + n.slice(3,7) + '-' + n.slice(7);
+  else if (n.length > 3) f = '(' + n.slice(0,2) + ') ' + n.slice(2,3) + ' ' + n.slice(3);
+  this.value = f;
+});
+
+/* ---------- Etapas ---------- */
+var etapa = 1, TOTAL = 4, enviado = false;
+var regras = {
+  1: [['ocasiao', function(v){ return v.trim().length > 1; }], ['pessoas', function(v){ return parseInt(v,10) > 0; }]],
+  2: [['data', function(v){ return !!v; }], ['horario', function(v){ return !!v; }]],
+  3: [['local', function(v){ return v.trim().length > 2; }]],
+  4: [['nome', function(v){ return v.trim().length > 2; }], ['whatsapp', function(v){ return v.replace(/\D/g,'').length >= 10; }]]
+};
+function valida(n){
+  var ok = true, primeiro = null;
+  regras[n].forEach(function(r){
+    var el = document.getElementById(r[0]);
+    var campo = el.closest('.campo');
+    if (!r[1](el.value)) { ok = false; campo.classList.remove('erro'); void campo.offsetWidth; campo.classList.add('erro'); if (!primeiro) primeiro = campo; }
+  });
+  if (primeiro) primeiro.scrollIntoView({behavior:'smooth', block:'center'});
+  return ok;
+}
+function mostraEtapa(n, volta){
+  document.querySelectorAll('.etapa').forEach(function(s){
+    var ativa = +s.dataset.etapa === n;
+    s.classList.toggle('ativa', ativa);
+    s.classList.toggle('volta', ativa && !!volta);
+  });
+  document.querySelectorAll('.progresso i').forEach(function(b,i){ b.classList.toggle('ok', i < n); });
+  var nome = document.querySelector('.etapa[data-etapa="'+n+'"]').dataset.nome;
+  document.getElementById('etapaNome').textContent = n + ' de ' + TOTAL + ' · ' + nome;
+  document.getElementById('btnVoltar').style.display = n > 1 ? '' : 'none';
+  document.getElementById('txtAvancar').textContent = n === TOTAL ? 'Enviar e abrir WhatsApp' : 'Continuar';
+  document.getElementById('formOrc').scrollTop = 0;
+  if (n === TOTAL) montaResumo();
+}
+function avancar(){
+  if (!valida(etapa)) return;
+  if (etapa < TOTAL) { etapa++; mostraEtapa(etapa); }
+  else enviarOrcamento();
+}
+function voltar(){ if (etapa > 1) { etapa--; mostraEtapa(etapa, true); } }
+
+function v(id){ return document.getElementById(id).value.trim(); }
+function dados(){
+  var d = dataLonga(v('data'));
+  return {
+    ocasiao: v('ocasiao'),
+    pessoas: v('pessoas'),
+    data: d ? d.curta : '',
+    diaSemana: d ? d.dia : '',
+    horario: v('horario'),
+    tipoLocal: v('tipoLocal'),
+    local: v('local'),
+    nome: v('nome'),
+    whatsapp: v('whatsapp'),
+    empresa: v('empresa'),
+    observacoes: v('obs'),
+    origem: 'Bio Instagram'
+  };
+}
+function montaResumo(){
+  var x = dados();
+  var linhas = [
+    ['Ocasião', x.ocasiao], ['Pessoas', x.pessoas], ['Data', x.data + ' (' + x.diaSemana + ')'],
+    ['Horário', horaBonita(x.horario)], ['Local', (x.tipoLocal ? x.tipoLocal + ', ' : '') + x.local]
+  ];
+  document.getElementById('resumo').innerHTML = linhas.map(function(l){
+    return '<div><dt>' + l[0] + '</dt><dd>' + esc(l[1]) + '</dd></div>';
+  }).join('');
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function mensagemOrcamento(x){
+  var m = 'Olá! Acabei de solicitar um orçamento pelo site.\n\n';
+  m += '*Ocasião:* ' + x.ocasiao + '\n';
+  m += '*Pessoas:* ' + x.pessoas + '\n';
+  m += '*Data:* ' + x.data + ' (' + x.diaSemana + ')\n';
+  m += '*Horário:* ' + horaBonita(x.horario) + '\n';
+  m += '*Local:* ' + (x.tipoLocal ? x.tipoLocal + ', ' : '') + x.local + '\n\n';
+  m += '*Nome:* ' + x.nome + '\n';
+  m += '*WhatsApp:* ' + x.whatsapp + '\n';
+  if (x.empresa) m += '*Empresa:* ' + x.empresa + '\n';
+  if (x.observacoes) m += '*Observações:* ' + x.observacoes + '\n';
+  return m;
+}
+
+function enviarOrcamento(){
+  var btn = document.getElementById('btnAvancar');
+  btn.disabled = true;
+  document.getElementById('txtAvancar').textContent = 'Enviando...';
+
+  var x = dados();
+  var linkWA = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(mensagemOrcamento(x));
+  document.getElementById('btnWaSucesso').href = linkWA;
+
+  var envio;
+  if (APPS_SCRIPT_URL.indexOf('script.google.com') > -1) {
+    envio = fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors', keepalive: true,
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(x)
+    }).catch(function(){});
+  } else {
+    console.warn('APPS_SCRIPT_URL não configurada. Os dados não foram salvos na planilha.');
+    envio = Promise.resolve();
+  }
+
+  var espera = new Promise(function(r){ setTimeout(r, 1800); });
+  Promise.race([envio, espera]).then(function(){
+    enviado = true;
+    document.querySelectorAll('.etapa').forEach(function(s){ s.classList.remove('ativa'); });
+    document.getElementById('sucesso').classList.add('ativo');
+    document.getElementById('topoOrc').querySelector('.progresso').style.display = 'none';
+    document.getElementById('etapaNome').style.display = 'none';
+    document.getElementById('baseOrc').style.display = 'none';
+    setTimeout(function(){ window.location.href = linkWA; }, 1200);
+  });
+}
+
+function resetForm(){
+  enviado = false; etapa = 1;
+  document.getElementById('formOrc').reset();
+  document.querySelectorAll('#formOrc .chip.sel').forEach(function(c){ c.classList.remove('sel'); });
+  document.querySelectorAll('#formOrc .campo.erro').forEach(function(c){ c.classList.remove('erro'); });
+  inData.dispatchEvent(new Event('change')); inHora.dispatchEvent(new Event('change'));
+  document.getElementById('sucesso').classList.remove('ativo');
+  document.getElementById('topoOrc').querySelector('.progresso').style.display = '';
+  document.getElementById('etapaNome').style.display = '';
+  document.getElementById('baseOrc').style.display = '';
+  var btn = document.getElementById('btnAvancar'); btn.disabled = false;
+  mostraEtapa(1);
+}
+
+/* ---------- Menu de encomendas ---------- */
+var MENU = [
+  { grupo:'Minis', itens:[
+    {id:'galo', nome:'Mini galo quente', preco:2.50, un:'un', passo:1},
+    {id:'hotdog', nome:'Mini hot dog', preco:2.60, un:'un', passo:1},
+    {id:'arabe-frios', nome:'Mini árabe com frios', preco:2.60, un:'un', passo:1},
+    {id:'arabe-frango', nome:'Mini árabe com frango', preco:2.60, un:'un', passo:1},
+    {id:'hamburguer', nome:'Mini hambúrguer', preco:4.80, un:'un', passo:1}
+  ]},
+  { grupo:'Salgados', itens:[
+    {id:'fritos', nome:'Salgados fritos', preco:96.00, un:'cento', passo:1, plural:'centos'},
+    {id:'forno', nome:'Salgados de forno', preco:99.00, un:'cento', passo:1, plural:'centos'}
+  ]},
+  { grupo:'Tortas e bolo', itens:[
+    {id:'torta-m', nome:'Torta de frango M', preco:150.00, un:'', passo:1},
+    {id:'torta-g', nome:'Torta de frango G', preco:200.00, un:'', passo:1},
+    {id:'bolo', nome:'Bolo M, 14 fatias', preco:49.00, un:'', passo:1}
+  ]},
+  { grupo:'Frutas e bebidas', itens:[
+    {id:'salada', nome:'Salada de frutas', preco:4.50, un:'un', passo:5},
+    {id:'suco', nome:'Sucos naturais', preco:15.00, un:'litro', passo:1, plural:'litros'},
+    {id:'refri', nome:'Refrigerantes', preco:16.00, un:'2L', passo:1, plural:'2L'}
+  ]}
+];
+var MINIMO = 250, ENTREGA = 20;
+var qtd = {};
+function brl(n){ return 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+(function montaMenu(){
+  var html = '';
+  MENU.forEach(function(g){
+    html += '<div class="grupo"><h4>' + g.grupo + '</h4>';
+    g.itens.forEach(function(it){
+      qtd[it.id] = 0;
+      var und = it.un ? ' <small>/ ' + it.un + '</small>' : '';
+      html += '<div class="item zero" data-id="' + it.id + '">' +
+        '<div class="nome"><b>' + it.nome + '</b><span>' + brl(it.preco) + und + '</span></div>' +
+        '<div class="passo">' +
+          '<button type="button" class="menos" aria-label="Diminuir ' + it.nome + '">−</button>' +
+          '<output>0</output>' +
+          '<button type="button" class="mais" aria-label="Aumentar ' + it.nome + '">+</button>' +
+        '</div></div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('listaMenu').innerHTML = html;
+})();
+
+function acha(id){ for (var i=0;i<MENU.length;i++) for (var j=0;j<MENU[i].itens.length;j++) if (MENU[i].itens[j].id===id) return MENU[i].itens[j]; }
+document.getElementById('listaMenu').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b) return;
+  var linha = b.closest('.item'); var it = acha(linha.dataset.id);
+  var n = qtd[it.id] + (b.classList.contains('mais') ? it.passo : -it.passo);
+  qtd[it.id] = Math.max(0, n);
+  var out = linha.querySelector('output');
+  out.textContent = qtd[it.id];
+  linha.classList.toggle('zero', qtd[it.id] === 0);
+  linha.classList.remove('tem'); void linha.offsetWidth; linha.classList.add('tem');
+  atualizaTotal();
+});
+function subtotal(){ var s = 0; MENU.forEach(function(g){ g.itens.forEach(function(it){ s += qtd[it.id] * it.preco; }); }); return s; }
+function atualizaTotal(){
+  var s = subtotal();
+  document.getElementById('totalTxt').textContent = brl(s);
+  var falta = MINIMO - s;
+  var barra = document.getElementById('barra');
+  document.getElementById('barraFill').style.width = Math.min(100, s / MINIMO * 100) + '%';
+  barra.classList.toggle('ok', falta <= 0);
+  document.getElementById('faltaTxt').textContent = s === 0 ? 'Pedido mínimo de R$ 250,00'
+    : falta > 0 ? 'Faltam ' + brl(falta) + ' para o mínimo'
+    : 'Com entrega: ' + brl(s + ENTREGA);
+  document.getElementById('btnEnc').disabled = falta > 0;
+}
+function qtdTexto(it, n){
+  if (it.un === 'un') return n + (n === 1 ? ' unidade' : ' unidades');
+  if (it.un === 'cento') return n + ' ' + (n === 1 ? 'cento' : 'centos');
+  if (it.un === 'litro') return n + ' ' + (n === 1 ? 'litro' : 'litros');
+  if (it.un === '2L') return n + (n === 1 ? ' garrafa 2L' : ' garrafas 2L');
+  return n + (n === 1 ? ' unidade' : ' unidades');
+}
+function enviarEncomenda(){
+  var s = subtotal(); if (s < MINIMO) return;
+  var m = 'Olá! Gostaria de fazer uma encomenda:\n\n';
+  MENU.forEach(function(g){ g.itens.forEach(function(it){
+    if (qtd[it.id] > 0) m += '- ' + it.nome + ': ' + qtdTexto(it, qtd[it.id]) + ' (' + brl(qtd[it.id] * it.preco) + ')\n';
+  }); });
+  m += '\n*Subtotal:* ' + brl(s) + '\n';
+  m += '*Taxa de entrega:* ' + brl(ENTREGA) + '\n';
+  m += '*Total:* ' + brl(s + ENTREGA) + '\n\n';
+  m += 'Podemos combinar data, horário e endereço de entrega?';
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(m), '_blank', 'noopener');
+}
+
+/* Abas */
+document.querySelectorAll('.aba').forEach(function(a){
+  a.addEventListener('click', function(){
+    document.querySelectorAll('.aba').forEach(function(x){ x.classList.toggle('sel', x === a); });
+    var cb = a.dataset.aba === 'cb';
+    document.getElementById('painel-enc').classList.toggle('ativo', !cb);
+    document.getElementById('painel-cb').classList.toggle('ativo', cb);
+    document.getElementById('baseEnc').style.display = cb ? 'none' : '';
+    document.getElementById('baseCb').style.display = cb ? '' : 'none';
+    a.closest('.folha').querySelector('.folha-corpo').scrollTop = 0;
+  });
+});
+function irParaOrcamento(){
+  fechar('modalMenu');
+  setTimeout(function(){
+    abrir('modalOrc');
+    var oc = document.getElementById('ocasiao');
+    if (!oc.value) {
+      var chip = document.querySelector('[data-alvo="ocasiao"] .chip');
+      chip.click();
+    }
+  }, 320);
+}
+</script>
+</body>
+</html>
