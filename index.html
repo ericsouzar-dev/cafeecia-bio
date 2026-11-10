@@ -574,7 +574,7 @@
       <h2 id="tituloOrc">Solicitar orçamento</h2>
       <p>Conta pra gente sobre o seu evento. Respondemos pelo WhatsApp.</p>
       <div class="progresso"><i class="ok"></i><i></i><i></i><i></i></div>
-      <div class="etapa-nome" id="etapaNome">1 de 4 · O evento</div>
+      <div class="etapa-nome" id="etapaNome">1 de 4</div>
     </div>
 
     <form class="folha-corpo" id="formOrc" novalidate>
@@ -736,7 +736,7 @@
 
       <div class="painel" id="painel-cb">
         <img class="cb-foto" src="assets/mesa-coffee-break.webp" alt="Mesa de coffee break montada" width="1000" height="650" loading="lazy">
-        <p class="cb-texto">Levamos a mesa montada até o seu evento. Cardápio e quantidades pensados para o seu público e o seu horário.</p>
+        <p class="cb-texto">Cardápio e quantidades pensados para o seu público e o seu horário.</p>
         <ul class="cb-lista">
           <li>Salgados de forno e fritos</li>
           <li>Mini sanduíches</li>
@@ -975,7 +975,7 @@ function mostraEtapa(n, volta){
   });
   document.querySelectorAll('.progresso i').forEach(function(b,i){ b.classList.toggle('ok', i < n); });
   var nome = document.querySelector('.etapa[data-etapa="'+n+'"]').dataset.nome;
-  document.getElementById('etapaNome').textContent = n + ' de ' + TOTAL + ' · ' + nome;
+  document.getElementById('etapaNome').textContent = n + ' de ' + TOTAL;
   var bv = document.getElementById('btnVoltar');
   bv.style.display = (n > 1 || origemMenu) ? '' : 'none';
   bv.textContent = (n === 1 && origemMenu) ? 'Cardápio' : 'Voltar';
