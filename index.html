@@ -115,13 +115,14 @@
   .cta-fotos img{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
     opacity:0;z-index:0;transform:scale(1.03);
-    transition:opacity 0s linear 1.5s,transform 0s linear 1.5s;
+    will-change:opacity,transform;backface-visibility:hidden;
   }
-  .cta-fotos img.anterior{opacity:1;z-index:1;transform:scale(1.1);transition:none}
+  .cta-fotos img.anterior{opacity:1;z-index:1;animation:zoomFoto 6s linear forwards}
   .cta-fotos img.ativa{
-    opacity:1;z-index:2;transform:scale(1.1);
-    transition:opacity 1.3s cubic-bezier(.4,0,.2,1),transform 5s linear;
+    opacity:1;z-index:2;animation:zoomFoto 6s linear forwards;
+    transition:opacity 1.6s cubic-bezier(.45,0,.55,1);
   }
+  @keyframes zoomFoto{from{transform:scale(1.03)}to{transform:scale(1.1)}}
   .cta::before{
     content:'';position:absolute;inset:0;z-index:-1;
     background:linear-gradient(to top,rgba(46,20,4,.55) 0%,rgba(46,20,4,0) 34%);
@@ -436,7 +437,7 @@
   .barra.ok i{background:#2EAA5C}
   .carrinho .btn-pri{flex:0 0 auto;padding:0 20px}
 
-  .cb-foto{width:100%;height:auto;aspect-ratio:1/1;border-radius:20px;margin-top:16px;display:block;background:var(--creme-2)}
+  .cb-foto{width:100%;height:auto;aspect-ratio:1000/650;border-radius:20px;margin-top:16px;display:block;background:var(--creme-2)}
   .cb-texto{margin-top:16px;line-height:1.55;color:var(--texto)}
   .cb-lista{list-style:none;margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .cb-lista li{background:var(--branco);border:1px solid var(--linha);border-radius:14px;padding:11px 12px;font-size:.88rem;color:var(--marrom);display:flex;align-items:center;gap:8px}
@@ -734,7 +735,7 @@
       </div>
 
       <div class="painel" id="painel-cb">
-        <img class="cb-foto" src="assets/mesa-completa.webp" alt="Mesa de coffee break montada" width="900" height="900" loading="lazy">
+        <img class="cb-foto" src="assets/mesa-coffee-break.webp" alt="Mesa de coffee break montada" width="1000" height="650" loading="lazy">
         <p class="cb-texto">Levamos a mesa montada até o seu evento. Cardápio e quantidades pensados para o seu público e o seu horário.</p>
         <ul class="cb-lista">
           <li>Salgados de forno e fritos</li>
@@ -788,14 +789,16 @@ document.getElementById('waFlutuante').href = linkPadrao;
 (function(){
   var fotos = ['mesa-completa','mini-galos','tortinhas','sanduiches','paes-recheados','mini-pizzas','salada-frutas'];
   var caixa = document.getElementById('ctaFotos');
-  var DUR = 3400, atual = 0, timer;
+  var DUR = 3600, atual = 0, timer;
   caixa.innerHTML = fotos.map(function(f){
     return '<img src="assets/' + f + '.webp" alt="" width="900" height="900" decoding="async">';
   }).join('');
   var imgs = caixa.querySelectorAll('img');
+  imgs.forEach(function(im){ if (im.decode) im.decode().catch(function(){}); });
   function mostra(n, ant){
-    imgs.forEach(function(im){ im.classList.remove('anterior'); });
+    imgs.forEach(function(im, i){ if (i !== ant && i !== n) im.classList.remove('anterior', 'ativa'); });
     if (ant != null) { imgs[ant].classList.add('anterior'); imgs[ant].classList.remove('ativa'); }
+    imgs[n].classList.remove('anterior');
     void imgs[n].offsetWidth;
     imgs[n].classList.add('ativa');
   }
