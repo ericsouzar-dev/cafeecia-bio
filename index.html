@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Café &amp; Cia</title>
-<meta name="description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta name="description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento">
 <meta name="theme-color" content="#FBEAD4">
 <link rel="canonical" href="https://valeriacafeecia.vercel.app/">
 <meta property="og:type" content="website">
@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Café &amp; Cia">
 <meta property="og:url" content="https://valeriacafeecia.vercel.app/">
 <meta property="og:title" content="Café &amp; Cia">
-<meta property="og:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta property="og:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento">
 <meta property="og:image" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
 <meta property="og:image:secure_url" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="Logo Café &amp; Cia Coffee Break">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Café &amp; Cia">
-<meta name="twitter:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento 🤎">
+<meta name="twitter:description" content="Coffee Break em Fortaleza-CE | Solicite seu orçamento">
 <meta name="twitter:image" content="https://valeriacafeecia.vercel.app/assets/og-image.jpg">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -286,6 +286,7 @@
     display:block;font-family:'Fredoka',sans-serif;font-weight:600;
     color:var(--marrom);font-size:1rem;margin-bottom:10px;
   }
+  .dica{font-size:.8rem;color:var(--suave);margin:-4px 0 12px;line-height:1.4}
   .campo .opc,.campo .label em{font-style:normal;font-family:'Questrial',system-ui,sans-serif;font-weight:400;color:var(--suave);font-size:.82rem;margin-left:4px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
   .chip{
@@ -435,13 +436,13 @@
   .barra.ok i{background:#2EAA5C}
   .carrinho .btn-pri{flex:0 0 auto;padding:0 20px}
 
-  .cb-foto{width:100%;height:190px;object-fit:cover;border-radius:20px;margin-top:16px;display:block}
+  .cb-foto{width:100%;height:auto;aspect-ratio:1/1;border-radius:20px;margin-top:16px;display:block;background:var(--creme-2)}
   .cb-texto{margin-top:16px;line-height:1.55;color:var(--texto)}
   .cb-lista{list-style:none;margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .cb-lista li{background:var(--branco);border:1px solid var(--linha);border-radius:14px;padding:11px 12px;font-size:.88rem;color:var(--marrom);display:flex;align-items:center;gap:8px}
   .cb-lista li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--laranja);flex-shrink:0}
   .mini-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-  .mini-fotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}
+  .mini-fotos img{width:100%;height:auto;aspect-ratio:900/833;border-radius:14px;display:block;background:var(--creme-2)}
 
   .toast{
     position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));
@@ -468,7 +469,7 @@
     .marca{grid-area:marca;align-self:end;margin-bottom:0;gap:26px}
     .marca-logo{width:230px}
     .etiquetas{width:100%}
-    .cta{grid-area:cta;aspect-ratio:4/5;max-width:470px;justify-self:end;border-radius:32px}
+    .cta{grid-area:cta;aspect-ratio:1/1;max-width:480px;justify-self:end;border-radius:32px}
     .cta-conteudo{padding:18px}
     .links{grid-area:links;align-self:start;margin-top:0;gap:12px}
     .link{min-height:70px;font-size:1.02rem}
@@ -580,6 +581,7 @@
       <section class="etapa ativa" data-etapa="1" data-nome="O evento">
         <div class="campo" data-campo="ocasiao">
           <span class="label">Qual a ocasião?</span>
+          <p class="dica">Toque em uma opção ou escreva no campo abaixo</p>
           <div class="chips" data-alvo="ocasiao">
             <button type="button" class="chip">Coffee break corporativo</button>
             <button type="button" class="chip">Reunião ou treinamento</button>
@@ -594,18 +596,19 @@
 
         <div class="campo" data-campo="pessoas">
           <span class="label">Quantas pessoas?</span>
+          <p class="dica">Escolha uma sugestão, use o + e o − ou digite</p>
           <div class="chips" data-alvo="pessoas">
+            <button type="button" class="chip">10</button>
             <button type="button" class="chip">20</button>
             <button type="button" class="chip">30</button>
             <button type="button" class="chip">50</button>
             <button type="button" class="chip">80</button>
             <button type="button" class="chip">100</button>
-            <button type="button" class="chip">150</button>
           </div>
           <div class="contador">
-            <button type="button" onclick="muda(-5)" aria-label="Menos 5">−</button>
+            <button type="button" onclick="muda(-1)" aria-label="Menos uma pessoa">−</button>
             <input class="entrada" id="pessoas" type="number" inputmode="numeric" min="1" placeholder="Digite" aria-label="Quantidade de pessoas">
-            <button type="button" onclick="muda(5)" aria-label="Mais 5">+</button>
+            <button type="button" onclick="muda(1)" aria-label="Mais uma pessoa">+</button>
           </div>
           <p class="msg-erro">Informe a quantidade aproximada.</p>
         </div>
@@ -625,6 +628,7 @@
 
         <div class="campo" data-campo="horario">
           <span class="label">Horário de servir</span>
+          <p class="dica">Toque em um horário ou escolha outro no relógio</p>
           <div class="chips" data-alvo="horario" data-tipo="hora">
             <button type="button" class="chip" data-v="07:30">07h30</button>
             <button type="button" class="chip" data-v="09:00">09h</button>
@@ -730,7 +734,7 @@
       </div>
 
       <div class="painel" id="painel-cb">
-        <img class="cb-foto" src="assets/mesa-completa.webp" alt="Mesa de coffee break montada" loading="lazy">
+        <img class="cb-foto" src="assets/mesa-completa.webp" alt="Mesa de coffee break montada" width="900" height="900" loading="lazy">
         <p class="cb-texto">Levamos a mesa montada até o seu evento. Cardápio e quantidades pensados para o seu público e o seu horário.</p>
         <ul class="cb-lista">
           <li>Salgados de forno e fritos</li>
@@ -741,9 +745,9 @@
           <li>Mesa montada no local</li>
         </ul>
         <div class="mini-fotos">
-          <img src="assets/tortinhas.webp" alt="Tortinhas" loading="lazy">
-          <img src="assets/sanduiches.webp" alt="Mini sanduíches" loading="lazy">
-          <img src="assets/salada-frutas.webp" alt="Salada de frutas" loading="lazy">
+          <img src="assets/tortinhas.webp" alt="Tortinhas" width="900" height="833" loading="lazy">
+          <img src="assets/sanduiches.webp" alt="Mini sanduíches" width="900" height="833" loading="lazy">
+          <img src="assets/paes-recheados.webp" alt="Pães recheados" width="900" height="833" loading="lazy">
         </div>
       </div>
     </div>
@@ -801,9 +805,10 @@ document.getElementById('waFlutuante').href = linkPadrao;
 })();
 
 /* ---------- Modais ---------- */
-var ultimoFoco = null;
-function abrir(id, trocar){
-  ultimoFoco = document.activeElement;
+var ultimoFoco = null, origemMenu = false;
+function abrir(id, trocar, doMenu){
+  if (id === 'modalOrc') { origemMenu = !!doMenu; if (typeof mostraEtapa === 'function' && !enviado) mostraEtapa(etapa); }
+  if (!doMenu) ultimoFoco = document.activeElement;
   document.getElementById(id).classList.add('ativo');
   document.body.style.overflow = 'hidden';
   try { trocar ? history.replaceState({modal:id}, '') : history.pushState({modal:id}, ''); } catch(e){}
@@ -815,13 +820,22 @@ function fechaVisual(id){
   if (ultimoFoco) try{ ultimoFoco.focus(); }catch(e){}
 }
 function fechar(id){
-  if (history.state && history.state.modal === id) { history.back(); }
-  else fechaVisual(id);
+  if (history.state && history.state.modal === id) {
+    if (id === 'modalOrc' && origemMenu) { origemMenu = false; history.go(-2); }
+    else history.back();
+  } else fechaVisual(id);
 }
 window.addEventListener('popstate', function(){
+  var alvo = history.state && history.state.modal;
   ['modalOrc','modalMenu'].forEach(function(id){
-    if (document.getElementById(id).classList.contains('ativo')) fechaVisual(id);
+    var el = document.getElementById(id);
+    if (id !== alvo && el.classList.contains('ativo')) fechaVisual(id);
   });
+  if (alvo && !document.getElementById(alvo).classList.contains('ativo')) {
+    document.getElementById(alvo).classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+  }
+  if (alvo !== 'modalOrc') origemMenu = false;
 });
 function foraFecha(e,id){ if (e.target.id === id) fechar(id); }
 document.addEventListener('keydown', function(e){
@@ -959,7 +973,9 @@ function mostraEtapa(n, volta){
   document.querySelectorAll('.progresso i').forEach(function(b,i){ b.classList.toggle('ok', i < n); });
   var nome = document.querySelector('.etapa[data-etapa="'+n+'"]').dataset.nome;
   document.getElementById('etapaNome').textContent = n + ' de ' + TOTAL + ' · ' + nome;
-  document.getElementById('btnVoltar').style.display = n > 1 ? '' : 'none';
+  var bv = document.getElementById('btnVoltar');
+  bv.style.display = (n > 1 || origemMenu) ? '' : 'none';
+  bv.textContent = (n === 1 && origemMenu) ? 'Cardápio' : 'Voltar';
   document.getElementById('txtAvancar').textContent = n === TOTAL ? 'Enviar e abrir WhatsApp' : 'Continuar';
   document.getElementById('formOrc').scrollTop = 0;
   if (n === TOTAL) montaResumo();
@@ -969,7 +985,10 @@ function avancar(){
   if (etapa < TOTAL) { etapa++; mostraEtapa(etapa); }
   else enviarOrcamento();
 }
-function voltar(){ if (etapa > 1) { etapa--; mostraEtapa(etapa, true); } }
+function voltar(){
+  if (etapa > 1) { etapa--; mostraEtapa(etapa, true); }
+  else if (origemMenu) { history.back(); }
+}
 
 function v(id){ return document.getElementById(id).value.trim(); }
 function dados(){
@@ -1001,52 +1020,56 @@ function montaResumo(){
 }
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
+function primeiroNome(n){ return String(n || '').trim().split(/\s+/)[0] || ''; }
 function mensagemOrcamento(x){
-  var m = 'Olá! Acabei de solicitar um orçamento pelo site.\n\n';
-  m += '*Ocasião:* ' + x.ocasiao + '\n';
+  var nome = primeiroNome(x.nome);
+  var oc = x.ocasiao.toLowerCase();
+  var m = 'Olá, Café & Cia! Me chamo ' + x.nome.trim() + (x.empresa ? ', da ' + x.empresa : '') +
+          ', e gostaria de um orçamento para ' + oc + '.\n\n';
   m += '*Pessoas:* ' + x.pessoas + '\n';
   m += '*Data:* ' + x.data + ' (' + x.diaSemana + ')\n';
   m += '*Horário:* ' + horaBonita(x.horario) + '\n';
-  m += '*Local:* ' + (x.tipoLocal ? x.tipoLocal + ', ' : '') + x.local + '\n\n';
-  m += '*Nome:* ' + x.nome + '\n';
-  m += '*WhatsApp:* ' + x.whatsapp + '\n';
-  if (x.empresa) m += '*Empresa:* ' + x.empresa + '\n';
+  m += '*Local:* ' + (x.tipoLocal ? x.tipoLocal + ', ' : '') + x.local + '\n';
   if (x.observacoes) m += '*Observações:* ' + x.observacoes + '\n';
+  m += '\nMeu contato: ' + x.whatsapp + '\nObrigado(a), ' + nome + '.';
   return m;
+}
+
+function registraNaPlanilha(x){
+  if (APPS_SCRIPT_URL.indexOf('script.google.com') < 0) return;
+  var corpo = JSON.stringify(x);
+  try {
+    if (navigator.sendBeacon && navigator.sendBeacon(APPS_SCRIPT_URL, new Blob([corpo], {type:'text/plain;charset=utf-8'}))) return;
+  } catch(e){}
+  try {
+    fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', keepalive:true,
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, body:corpo }).catch(function(){});
+  } catch(e){}
 }
 
 function enviarOrcamento(){
   var btn = document.getElementById('btnAvancar');
+  if (btn.disabled) return;
   btn.disabled = true;
-  document.getElementById('txtAvancar').textContent = 'Enviando...';
+  document.getElementById('txtAvancar').textContent = 'Abrindo WhatsApp...';
 
   var x = dados();
   var linkWA = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(mensagemOrcamento(x));
   document.getElementById('btnWaSucesso').href = linkWA;
+  document.getElementById('sucessoTxt').textContent = 'Pronto, ' + primeiroNome(x.nome) + '! Sua mensagem já está escrita no WhatsApp. É só tocar em enviar.';
 
-  var envio;
-  if (APPS_SCRIPT_URL.indexOf('script.google.com') > -1) {
-    envio = fetch(APPS_SCRIPT_URL, {
-      method: 'POST', mode: 'no-cors', keepalive: true,
-      headers: {'Content-Type': 'text/plain;charset=utf-8'},
-      body: JSON.stringify(x)
-    }).catch(function(){});
-  } else {
-    console.warn('APPS_SCRIPT_URL não configurada. Os dados não foram salvos na planilha.');
-    envio = Promise.resolve();
-  }
+  // Salva na planilha em segundo plano, sem esperar resposta
+  registraNaPlanilha(x);
+  salvaContato(x);
 
-  var espera = new Promise(function(r){ setTimeout(r, 700); });
-  Promise.race([envio, espera]).then(function(){
-    enviado = true;
-    document.querySelectorAll('.etapa').forEach(function(s){ s.classList.remove('ativa'); });
-    document.getElementById('sucesso').classList.add('ativo');
-    document.getElementById('topoOrc').querySelector('.progresso').style.display = 'none';
-    document.getElementById('etapaNome').style.display = 'none';
-    document.getElementById('baseOrc').style.display = 'none';
-    salvaContato(x);
-    setTimeout(function(){ window.location.href = linkWA; }, 900);
-  });
+  enviado = true;
+  document.querySelectorAll('.etapa').forEach(function(s){ s.classList.remove('ativa'); });
+  document.getElementById('sucesso').classList.add('ativo');
+  document.getElementById('topoOrc').querySelector('.progresso').style.display = 'none';
+  document.getElementById('etapaNome').style.display = 'none';
+  document.getElementById('baseOrc').style.display = 'none';
+
+  setTimeout(function(){ window.location.href = linkWA; }, 150);
 }
 
 function salvaContato(x){
@@ -1199,14 +1222,9 @@ document.querySelectorAll('.aba').forEach(function(a){
   });
 });
 function irParaOrcamento(){
-  fechaVisual('modalMenu');
+  document.getElementById('modalMenu').classList.remove('ativo');
   setTimeout(function(){
-    abrir('modalOrc', true);
-    var oc = document.getElementById('ocasiao');
-    if (!oc.value) {
-      var chip = document.querySelector('[data-alvo="ocasiao"] .chip');
-      chip.click();
-    }
+    abrir('modalOrc', false, true);
   }, 320);
 }
 </script>
